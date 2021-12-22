@@ -1,25 +1,27 @@
 package engine.service;
 
-import engine.model.Answer;
-import engine.model.Quiz;
-import engine.model.Result;
+import engine.model.dto.Answer;
+import engine.model.entity.Quiz;
+import engine.model.dto.Result;
+import engine.repository.QuizRepository;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class QuizService {
-    Map<Integer, Quiz> quizzes = new ConcurrentHashMap<>();
+    private final QuizRepository quizRepository;
+
+    public QuizService(QuizRepository quizRepository) {
+        this.quizRepository = quizRepository;
+    }
 
     public Result checkAnswer(int quizId, Answer answer) {
-        if (quizzes.get(quizId) != null) {
+        Optional<Quiz> quiz = getOne(quizId);
+        if (quiz.isPresent()) {
             if (answer.getAnswer().equals(
-                    quizzes.get(quizId).getAnswer() == null ? List.of() : quizzes.get(quizId).getAnswer())
+                    quiz.get().getAnswer() == null ? List.of() : quiz.get().getAnswer())
             ) {
                 return new Result(true, "Congratulations, you're right!");
             } else {
@@ -31,16 +33,14 @@ public class QuizService {
     }
 
     public Quiz saveQuiz(Quiz quiz) {
-        quiz.setId(quizzes.size() > 0 ? quizzes.size() + 1 : 1);
-        quizzes.put(quiz.getId(), quiz);
-        return quiz;
+        return quizRepository.save(quiz);
     }
 
     public Optional<Quiz> getOne(int id) {
-        return Optional.ofNullable(quizzes.get(id));
+        return quizRepository.findById(id);
     }
 
     public List<Quiz> getAll() {
-        return new ArrayList<>(quizzes.values());
+        return quizRepository.findAll();
     }
 }

@@ -1,13 +1,14 @@
-package engine.model;
+package engine.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Result {
-    boolean success;
-    String feedback;
+public class Answer {
+    List<Integer> answer;
 }

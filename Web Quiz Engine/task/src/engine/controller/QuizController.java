@@ -1,8 +1,8 @@
 package engine.controller;
 
-import engine.model.Answer;
-import engine.model.Quiz;
-import engine.model.Result;
+import engine.model.dto.Answer;
+import engine.model.entity.Quiz;
+import engine.model.dto.Result;
 import engine.service.QuizService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
