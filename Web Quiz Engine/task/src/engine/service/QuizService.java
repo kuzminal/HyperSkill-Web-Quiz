@@ -1,8 +1,9 @@
 package engine.service;
 
 import engine.model.dto.Answer;
-import engine.model.entity.Quiz;
 import engine.model.dto.Result;
+import engine.model.entity.Quiz;
+import engine.model.entity.User;
 import engine.repository.QuizRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ public class QuizService {
         this.quizRepository = quizRepository;
     }
 
-    public Result checkAnswer(int quizId, Answer answer) {
+    public Result checkAnswer(int quizId, Answer answer, User user) {
         Optional<Quiz> quiz = getOne(quizId);
         if (quiz.isPresent()) {
             if (answer.getAnswer().equals(
@@ -32,7 +33,8 @@ public class QuizService {
         }
     }
 
-    public Quiz saveQuiz(Quiz quiz) {
+    public Quiz saveQuiz(Quiz quiz, User user) {
+        quiz.setUser(user);
         return quizRepository.save(quiz);
     }
 
@@ -42,5 +44,9 @@ public class QuizService {
 
     public List<Quiz> getAll() {
         return quizRepository.findAll();
+    }
+
+    public void deleteQuiz(Quiz quiz) {
+        quizRepository.delete(quiz);
     }
 }
