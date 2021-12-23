@@ -10,12 +10,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -34,19 +36,6 @@ public class User implements UserDetails {
     @Column(unique = true, name = "username")
     @JsonProperty("email")
     String username;
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,
-            mappedBy = "user",
-            cascade = CascadeType.REMOVE,
-            orphanRemoval = true)
-    private Set<Quiz> quizzes = Set.of();
-
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,
-            mappedBy = "user",
-            cascade = CascadeType.REMOVE,
-            orphanRemoval = true)
-    private Set<CompletedQuiz> completedQuizzes = Set.of();
 
     @JsonIgnore
     @Override

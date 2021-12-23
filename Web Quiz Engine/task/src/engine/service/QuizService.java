@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -61,7 +62,9 @@ public class QuizService {
         return quizRepository.findAll(PageRequest.of(pageNo, pageSize, Sort.by(sortBy)));
     }
 
+    @Transactional
     public void deleteQuiz(Quiz quiz) {
+        completedQuizRepository.deleteByQuiz(quiz);
         quizRepository.delete(quiz);
     }
 
