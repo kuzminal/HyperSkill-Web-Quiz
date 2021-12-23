@@ -42,6 +42,13 @@ public class User implements UserDetails {
     private Set<Quiz> quizzes = Set.of();
 
     @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY,
+            mappedBy = "user",
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true)
+    private Set<CompletedQuiz> completedQuizzes = Set.of();
+
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));

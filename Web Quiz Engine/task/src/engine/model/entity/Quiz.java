@@ -11,7 +11,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,6 +38,15 @@ public class Quiz {
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
     private User user;
+    @JsonIgnore
+    LocalDateTime completedAt;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY,
+            mappedBy = "quiz",
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true)
+    private Set<CompletedQuiz> completedQuizzes = Set.of();
 
     @JsonIgnore
     public List<Integer> getAnswer() {

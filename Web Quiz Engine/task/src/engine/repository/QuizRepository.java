@@ -1,8 +1,8 @@
 package engine.repository;
 
 import engine.model.entity.Quiz;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Transactional(readOnly = true)
 @Repository
-public interface QuizRepository extends JpaRepository<Quiz, Integer> {
+public interface QuizRepository extends PagingAndSortingRepository<Quiz, Integer> {
     @Query("SELECT m FROM Quiz m WHERE m.user.username=:userName ORDER BY m.title DESC")
     List<Quiz> findAllByUser(@Param("userName") String userName);
     @Query("SELECT m FROM Quiz m WHERE m.user.username=:userName AND m.id=:id")
